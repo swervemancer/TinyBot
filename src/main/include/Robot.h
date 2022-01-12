@@ -5,10 +5,13 @@
 #pragma once
 
 #include <string>
+#include "subsystems/Bang-Bang.hpp"
 
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include "AutonomousChooser.hpp"
+
+#include "Constants.hpp"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -23,6 +26,10 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
- private:
-  
+  private:
+    frc::SendableChooser<std::string> m_chooser;
+    const std::string kAutoNameDefault = "Default";
+    const std::string kAutoNameCustom = "My Auto";
+    std::string m_autoSelected;
+    BangBang bang;
 };
