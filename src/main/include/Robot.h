@@ -5,12 +5,13 @@
 #pragma once
 
 #include <string>
-#include "subsystems/Bang-Bang.hpp"
 
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
-#include "AutonomousChooser.hpp"
 
+#include "subsystems/BangBang.hpp"
+#include "subsystems/PID.hpp"
+#include "AutonomousChooser.hpp"
 #include "Constants.hpp"
 
 class Robot : public frc::TimedRobot {
@@ -32,4 +33,5 @@ class Robot : public frc::TimedRobot {
     const std::string kAutoNameCustom = "My Auto";
     std::string m_autoSelected;
     BangBang bang;
+    PID pid;
 };

@@ -1,27 +1,36 @@
 
 #include "Robot.h"
 
+#include <frc/Filesystem.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/SmallString.h>
 #include <iostream>
-
 #include <fmt/core.h>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
-  if (Constants::BangBang == true) {
+  if (BangBangEnable == true) {
     m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
     m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
     frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
     bang.Reset();
   }
+  if (PIDEnable == true) {
+    pid.Reset();
+  }
 }
 
 
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  if (PIDEnable == true) {
+    pid.Logging();
+    pid.Periodic();
+  }
+}
 
 
 void Robot::AutonomousInit() {
-  if (Constants::BangBang == true) {
+  if (BangBangEnable == true) {
     m_autoSelected = m_chooser.GetSelected();
     bang.Reset();
     // m_autoSelected = SmartDashboard::GetString("Auto Selector",
@@ -34,10 +43,14 @@ void Robot::AutonomousInit() {
       // Default Auto goes here
     }
   }
+  if(PIDEnable == true) {
+    pid.Reset();
+    pid.DriveAtSetpoint(units::meter_t{2}, 5_mps);
+  }
 }
 
 void Robot::AutonomousPeriodic() {
-  if (Constants::BangBang == true) {
+  if (BangBangEnable == true) {
      if (m_autoSelected == kAutoNameCustom) {
       bang.Drive(units::meter_t{10000});
     } else {
@@ -51,8 +64,11 @@ void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {}
 
 void Robot::DisabledInit() {
-  if (Constants::BangBang == true) {
+  if (BangBangEnable == true) {
     bang.Reset();
+  }
+  if (PIDEnable == true) {
+    pid.Reset();
   }
 }
 

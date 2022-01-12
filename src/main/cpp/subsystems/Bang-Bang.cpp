@@ -1,6 +1,4 @@
-#include "subsystems/Bang-Bang.hpp"
-
-using namespace Constants;
+#include "subsystems/BangBang.hpp"
 
 BangBang::BangBang() {
     m_leftEncoder.SetDistancePerPulse(
